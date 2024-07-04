@@ -1,1 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technology Dashboard</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(120deg, #84fab0, #8fd3f4);
+            background-size: 200% 200%;
+            animation: gradientAnimation 15s ease infinite;
+        }
 
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .container h2 {
+            margin-bottom: 20px;
+        }
+
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .button-container a {
+            text-decoration: none;
+        }
+
+        .button-container button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .button-container button:hover {
+            background: #ddd;
+        }
+
+        .button-sms { background-color: #ff6b6b; }
+        .button-mail { background-color: #1e90ff; }
+        .button-search { background-color: #f1c40f; }
+        .button-location { background-color: #2ecc71; }
+        .button-docker { background-color: #3498db; }
+        .button-tts { background-color: #9b59b6; }
+        .button-cloudwatch { background-color: #e67e22; }
+        .button-aws-instance { background-color: #95a5a6; }
+        .button-cli { background-color: #34495e; }
+        .button-html-interpreter { background-color: #e74c3c; }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+       <h2>Manu Project</h2>
+        <div class="button-container">
+            <a href="http://13.232.31.227/send_sms.html"><button class="button-sms">SMS</button></a>
+            <a href="http://13.232.31.227/send_mail.html"><button class="button-mail">Mail</button></a>
+            <a href="http://13.232.31.227/search.html"><button class="button-search">Search</button></a>
+            <a href="http://13.232.31.227/geolocator.html"><button class="button-location">Location</button></a>
+            <a href="http://13.232.31.227/Docker.html"><button class="button-docker">Docker</button></a>
+            <a href="http://13.232.31.227/text_to_speech.html"><button class="button-tts">Text to Speech</button></a>
+            <a href="http://13.232.31.227/cloudwatch.html"><button class="button-cloudwatch">Cloudwatch</button></a>
+            <a href="http://13.232.31.227/Instance.html"><button class="button-aws-instance">AWS Instance</button></a>
+            <a href="http://13.232.31.227/cli_live_terminal.html"><button class="button-cli">CLI Live Terminal</button></a>
+            <a href="http://13.232.31.227/html_live_Interpriter.html"><button class="button-html-interpreter">HTML Live Interpreter</button></a>
+        </div>
+    </div>
+</body>
+</html>
