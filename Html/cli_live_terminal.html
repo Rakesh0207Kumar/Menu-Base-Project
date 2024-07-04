@@ -1,1 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <a href="http://13.232.31.227/Instance.html"><button class="button-aws-instance">AWS Instance</button></a>
+    <a href="http://13.232.31.227/s3.html"><button class="button-aws-instance">s3_bucket</button></a>
 
+</body>
+</html>[root@ip-172-31-1-240 html]# ^C
+[root@ip-172-31-1-240 html]# cat cli_live_terminal.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linux Interpreter</title>
+    <style>
+        body {
+            background-color: #282c34;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            color: white;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        h2 {
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+        .input-container {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            max-width: 600px;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 15px;
+            margin-right: 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        button {
+            padding: 15px 20px;
+            border: none;
+            border-radius: 4px;
+            background-color: #61dafb;
+            color: #282c34;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #21a1f1;
+        }
+        #d1 {
+            background-color: #fff;
+            color: #282c34;
+            padding: 20px;
+            border-radius: 4px;
+            width: 100%;
+            max-width: 600px;
+            margin-top: 20px;
+            overflow-x: auto;
+            word-wrap: break-word;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        @media (max-width: 600px) {
+            .input-container {
+                flex-direction: column;
+            }
+            input[type="text"] {
+                margin: 0 0 10px 0;
+            }
+        }
+    </style>
+    <script>
+        function lw() {
+            var command = document.getElementById("input").value;
+            if (command.trim() === "") {
+                alert("Please enter a command.");
+                return;
+            }
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/cgi-bin/cli_live_terminal.py?cmd=" + encodeURIComponent(command), true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4) {
+                    var output = document.getElementById("d1");
+                    if (xhr.status == 200) {
+                        output.innerText = xhr.responseText;
+                    } else {
+                        output.innerText = "Error: " + xhr.status;
+                    }
+                }
+            };
+            xhr.send();
+        }
+    </script>
+</head>
+<body>
+    <h2>Linux Interpreter</h2>
+    <div class="input-container">
+        <input id="input" type="text" placeholder="Enter your required command" />
+        <button onclick="lw()">Execute</button>
+    </div>
+    <div id="d1"></div>
+</body>
+</html>
