@@ -1,1 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Get Coordinates</title>
+</head>
+<body>
+    <h1>Get Coordinates</h1>
+    <form id="geolocator-form">
+        <label for="location">Enter location:</label>
+        <input type="text" id="location" name="location" required>
+        <button type="submit">Get Coordinates</button>
+    </form>
+    <div id="result"></div>
 
+    <script>
+        document.getElementById('geolocator-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var location = document.getElementById('location').value;
+            fetch('/cgi-bin/geolocator.py?location=' + encodeURIComponent(location))
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('result').innerText = JSON.stringify(data, null, 2);
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
