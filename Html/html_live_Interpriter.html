@@ -1,1 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live HTML Interpreter</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #75ee62, #9cc702, #1078da, #9b8f09);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #333;
+        }
+0
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
 
+        /* Header styles */
+        .header {
+            background-color: rgba(255, 255, 255, 0.8);
+            color: #333;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            letter-spacing: 2px;
+        }
+
+        /* Home button styles */
+        .home-btn {
+            background-color: #333;
+            border: none;
+            color: #fff;
+            font-size: 14px;
+            cursor: pointer;
+            outline: none;
+            padding: 10px 20px;
+            position: absolute;
+            top: 50%;
+            left: 10px;
+            transform: translateY(-50%);
+            transition: background-color 0.3s ease;
+            border-radius: 5px;
+        }
+
+        .home-btn:hover {
+            background-color: #555;
+        }
+
+        /* Container styles */
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 60px); /* Adjust for header height */
+            backdrop-filter: blur(10px);
+        }
+
+        .editor-container {
+            flex: 1;
+            display: flex;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            margin: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .editor, .output {
+            flex: 1;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+
+        .editor {
+            border-right: 1px solid #ccc;
+        }
+
+        .output {
+            background-color: #f9f9f9;
+        }
+
+        .editor:focus, .output:focus {
+            outline: none;
+        }
+
+        /* Initial HTML content styles */
+        .editor p {
+            margin: 0;
+            padding: 0;
+            white-space: pre-wrap;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <button class="home-btn" onclick="goToHome()">Home</button>
+        <h1>Live HTML Interpreter</h1>
+    </div>
+
+    <!-- Main content -->
+    <div class="container">
+        <div class="editor-container">
+            <div class="editor" contenteditable="true" id="htmlInput">
+                <!-- Initial HTML content -->
+                <p>&lt;!DOCTYPE html&gt;</p>
+                <p>&lt;html lang="en"&gt;</p>
+                <p>&lt;head&gt;</p>
+                <p>&lt;meta charset="UTF-8"&gt;</p>
+                <p>&lt;title&gt;Live HTML Interpreter&lt;/title&gt;</p>
+                <p>&lt;/head&gt;</p>
+                <p>&lt;body&gt;</p>
+                <p>&lt;h1&gt;Hello, World!&lt;/h1&gt;</p>
+                <p>&lt;/body&gt;</p>
+                <p>&lt;/html&gt;</p>
+            </div>
+            <div class="output" id="htmlOutput"></div>
+        </div>
+    </div>
+
+    <script>
+        // Function to update output with user input HTML
+        function updateOutput() {
+            var htmlInput = document.getElementById('htmlInput').innerText;
+            var htmlOutput = document.getElementById('htmlOutput');
+            htmlOutput.innerHTML = htmlInput;
+        }
+
+        // Update output on input change
+        document.getElementById('htmlInput').addEventListener('input', updateOutput);
+
+        // Function to navigate to Home page
+        function goToHome() {
+            window.location.href = "index.html"; // Change index.html to your home page
+        }
+    </script>
+</body>
+</html>
