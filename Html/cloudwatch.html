@@ -1,1 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CloudWatch Metrics</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        #container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            width: 400px;
+            text-align: center;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        input[type="text"], input[type="submit"] {
+            width: calc(100% - 20px);
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        input[type="submit"] {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        input[type="submit"]:hover {
+            background-color: #218838;
+        }
+        #metrics {
+            margin-top: 20px;
+            text-align: left;
+        }
+        #metrics h2 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        #metrics ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        #metrics li {
+            background: #f8f9fa;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+    </style>
+    <script>
+        function fetchMetrics() {
+            var form = document.getElementById('metricsForm');
+            var formData = new FormData(form);
 
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/cgi-bin/cloudwatch.py", true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        try {
+                            var data = JSON.parse(xhr.responseText);
+                            var output = "<h2>CloudWatch Metrics</h2><ul>";
+                            if (data.error) {
+                                output += "<li>Error: " + data.error + "</li>";
+                            } else {
+                                data.forEach(function(point) {
+                                    output += "<li>Time: " + point.Time + ", Average: " + point.Average + "</li>";
+                                });
+                            }
+                            output += "</ul>";
+                            document.getElementById("metrics").innerHTML = output;
+                        } catch (e) {
+                            console.error("Failed to parse response JSON: ", e);
+                            document.getElementById("metrics").innerHTML = "<p>Error parsing response.</p>";
+                        }
+                    } else {
+                        console.error("Request failed with status: " + xhr.status);
+                        document.getElementById("metrics").innerHTML = "<p>Request failed. Status: " + xhr.status + "</p>";
+                    }
+                }
+            };
+            xhr.onerror = function () {
+                console.error("Request failed due to a network error.");
+                document.getElementById("metrics").innerHTML = "<p>Network error occurred.</p>";
+            };
+            xhr.send(formData);
+        }
+    </script>
+</head>
+<body>
+    <div id="container">
+        <h1>Enter CloudWatch Metrics Parameters</h1>
+        <form id="metricsForm" onsubmit="event.preventDefault(); fetchMetrics();">
+            <input type="text" id="aws_access_key_id" name="aws_access_key_id" placeholder="AWS Access Key ID" required><br>
+            <input type="text" id="aws_secret_access_key" name="aws_secret_access_key" placeholder="AWS Secret Access Key" required><br>
+            <input type="text" id="region_name" name="region_name" placeholder="Region" required><br>
+            <input type="text" id="namespace" name="namespace" placeholder="Namespace" required><br>
+            <input type="text" id="metric_name" name="metric_name" placeholder="Metric Name" required><br>
+            <input type="text" id="instance_id" name="instance_id" placeholder="Instance ID" required><br>
+            <input type="submit" value="Fetch Metrics">
+        </form>
+        <div id="metrics">
+            <p>Metrics will be displayed here...</p>
+        </div>
+    </div>
+</body>
+</html>
