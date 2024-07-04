@@ -1,1 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AWS EC2 Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
 
+        .container {
+            width: 50%;
+            margin: 100px auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        select, input[type="text"], button {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #28a745;
+            color: #fff;
+            cursor: pointer;
+            border: none;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>AWS EC2 Instance Management</h1>
+
+            <div class="form-group">
+                <label for="action">Action:</label>
+                <select name="action" id="action">
+                    <option value="launch">Launch Instance</option>
+                    <option value="terminate">Terminate Instance</option>
+                </select>
+            </div>
+
+            <button type="button" onclick="LaunchInstance()">LaunchInstance</button>
+
+        <div id="result" style="font-size: larger; color: black;"> <h1>result will show herepwd</h1> </div>
+    </div>
+    <script>
+
+        const LaunchInstance =()=>{
+            const url = "http://13.232.31.227/cgi-bin/Instance.py"
+            const xhr = new XMLHttpRequest();
+            xhr.open("GET", url, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4) {
+
+                    if (xhr.status == 200) {
+                        document.getElementById("result").innerHTML = xhr.responseText;
+                        console.log("Hii we are here")
+                        console.log(xhr.response)
+                    } else {
+                        console.log(xhr.response);
+                        document.getElementById("result").innerHTML = "Something went wrong";
+                    }
+                }
+            };
+            xhr.send();
+
+
+
+
+
+        }
+
+
+
+    </script>
+</body>
+</html>
