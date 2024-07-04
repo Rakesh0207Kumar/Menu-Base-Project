@@ -1,1 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+        }
+        #results {
+            margin-top: 20px;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+    <script>
+        function searchQuery() {
+            const query = document.getElementById("query").value;
+            const xhr = new XMLHttpRequest();
+            xhr.open("GET", `cgi-bin/search.py?query=${encodeURIComponent(query)}`, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    const resultsDiv = document.getElementById("results");
+                    resultsDiv.innerHTML = "";
+                    if (xhr.status === 200) {
+                        try {
+                            const response = JSON.parse(xhr.responseText);
+                            if (response.error) {
+                                displayError(response.error);
+                            } else {
+                                displayResults(response);
+                            }
+                        } catch (e) {
+                            displayError("Invalid response from server");
+                        }
+                    } else {
+                        displayError(`HTTP error: ${xhr.status}`);
+                    }
+                }
+            };
+            xhr.send();
+        }
 
+        function displayResults(results) {
+            const resultsDiv = document.getElementById("results");
+            resultsDiv.innerHTML = "";
+            results.forEach((result, index) => {
+                const resultElement = document.createElement("div");
+                resultElement.textContent = `${index + 1}. ${result}`;
+                resultsDiv.appendChild(resultElement);
+            });
+        }
+
+        function displayError(message) {
+            const resultsDiv = document.getElementById("results");
+            resultsDiv.innerHTML = `<div class="error">${message}</div>`;
+        }
+    </script>
+</head>
+<body>
+  <h1>Search Page</h1>
+    <input type="text" id="query" placeholder="Enter search query">
+    <button onclick="searchQuery()">Search</button>
+    <div id="results"></div>
+</body>
+</html>
