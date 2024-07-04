@@ -1,1 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(120deg, #a1c4fd, #c2e9fb);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+        }
 
+        @keyframes gradientBackground {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            width: 90%;
+            max-width: 1000px;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .card-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .card-button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 25px;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+        }
+
+        .card-button:hover {
+            background-color: #0056b3;
+        }
+
+        h1 {
+            font-size: 36px;
+            color: #333;
+            margin-bottom: 40px;
+        }
+    </style>
+</head>
+<body>
+    <h1>MANU PROJECT</h1>
+    <div class="container">
+        <div class="card" onclick="location.href='linux.html'">
+            <img src="https://via.placeholder.com/250x150.png?text=Linux+Service" alt="Linux Service">
+            <div class="card-content">
+                <div class="card-title">Linux Service</div>
+                <a href="linux.html" class="card-button">Click Here</a>
+            </div>
+        </div>
+        <div class="card" onclick="location.href='Python_Service.html'">
+            <img src="https://via.placeholder.com/250x150.png?text=Python+Service" alt="Python Service">
+            <div class="card-content">
+                <div class="card-title">Python Service</div>
+                <a href="Python_Service.html" class="card-button">Click Here</a>
+            </div>
+        </div>
+        <div class="card" onclick="location.href='Docker.html'">
+            <img src="https://via.placeholder.com/250x150.png?text=Docker+Service" alt="Docker Service">
+            <div class="card-content">
+                <div class="card-title">Docker Service</div>
+                <a href="Docker.html" class="card-button">Click Here</a>
+            </div>
+        </div>
+        <div class="card" onclick="location.href='aws.html'">
+            <img src="https://via.placeholder.com/250x150.png?text=AWS+Service" alt="AWS Service">
+            <div class="card-content">
+                <div class="card-title">AWS Service</div>
+                <a href="aws.html" class="card-button">Click Here</a>
+            </div>
+        </div>
+        <div class="card" onclick="location.href='fullstak.html'">
+            <img src="https://via.placeholder.com/250x150.png?text=Full+Stack+Service" alt="Full Stack Service">
+            <div class="card-content">
+                <div class="card-title">Full Stack Service</div>
+                <a href="fullstak.html" class="card-button">Click Here</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
