@@ -1,1 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Sender</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            border: none;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .result {
+            margin-top: 20px;
+        }
+        .result div {
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        .result .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .result .failed {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Send Email</h1>
+        <form id="emailForm" method="POST" action="/cgi-bin/send_mail.py" enctype="application/x-www-form-urlencoded">
+            <label for="emails">Recipient Email Addresses (comma-separated):</label>
+            <input type="text" id="emails" name="emails" required>
+            <label for="subject">Subject:</label>
+            <input type="text" id="subject" name="subject" required>
+            <label for="body">Body:</label>
+            <textarea id="body" name="body" rows="5" required></textarea>
+            <button type="submit">Send Email</button>
+        </form>
+        <div id="result" class="result"></div>
+    </div>
 
+    <script>
+        document.getElementById('emailForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const form = event.target;
+            const formData = new FormData(form);
+
+            fetch('/cgi-bin/send_mail.py', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                const resultDiv = document.getElementById('result');
+                resultDiv.innerHTML = '';
+                if (data.status === "error") {
+                    resultDiv.innerHTML = `<div class="failed">${data.message}</div>`;
+                } else {
+                    data.forEach(item => {
+                        const div = document.createElement('div');
+                        div.className = item.status;
+                        div.innerHTML = `Email to ${item.email}: ${item.status}`;
+                        if (item.status === 'failed') {
+                            div.innerHTML += `<br>Error: ${item.error}`;
+                        }
+                        resultDiv.appendChild(div);
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
