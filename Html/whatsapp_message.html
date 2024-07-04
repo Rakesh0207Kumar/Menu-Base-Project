@@ -1,1 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Message Scheduler</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #ececec;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
 
+        .scheduler-container {
+            background: #fff;
+            width: 350px;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .scheduler-header {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4CAF50;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .scheduler-header i {
+            font-size: 28px;
+            margin-right: 10px;
+            color: #4CAF50;
+        }
+
+        .scheduler-form {
+            width: 100%;
+        }
+
+        .scheduler-form label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .scheduler-form input[type="text"],
+        .scheduler-form input[type="number"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .scheduler-form input[type="submit"] {
+            background: #4CAF50;
+            color: #fff;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 18px;
+            transition: background 0.3s ease;
+        }
+
+        .scheduler-form input[type="submit"]:hover {
+            background: #45A049;
+        }
+
+        .scheduler-footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="scheduler-container">
+        <div class="scheduler-header">
+            <i class="fas fa-calendar-alt"></i>
+            Schedule WhatsApp Message
+        </div>
+        <div class="scheduler-form">
+            <form action="/cgi-bin/whatsapp_message.py" method="post">
+                <label for="phone_number">Phone Number:</label>
+                <input type="text" id="phone_number" name="phone_number" placeholder="Enter phone number" required>
+
+                <label for="message">Message:</label>
+                <input type="text" id="message" name="message" placeholder="Enter your message" required>
+
+                <label for="hour">Hour (24-hour format):</label>
+                <input type="number" id="hour" name="hour" min="0" max="23" required>
+
+                <label for="minute">Minute:</label>
+                <input type="number" id="minute" name="minute" min="0" max="59" required>
+
+                <input type="submit" value="Schedule Message">
+            </form>
+        </div>
+        <div class="scheduler-footer">
+            <p>Make sure the phone number is in the correct format.</p>
+        </div>
+    </div>
+</body>
+</html>
