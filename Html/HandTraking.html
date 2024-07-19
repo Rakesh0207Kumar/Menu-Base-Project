@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hand Tracking UI</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        #camera-container {
+            position: relative;
+            width: 640px;
+            height: 480px;
+            border: 5px solid #007bff;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        #output-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .hand-info {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .hand-info span {
+            display: block;
+            font-size: 1.2rem;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mb-4">Hand Tracking UI</h1>
+        <div id="camera-container">
+            <video id="input-video" class="w-100 h-100"></video>
+            <canvas id="output-canvas"></canvas>
+        </div>
+        <div class="hand-info" id="hand-info">
+            <span>Hand 1: <span id="hand1-info">N/A</span></span>
+            <span>Hand 2: <span id="hand2-info">N/A</span></span>
+        </div>
+    </div>
+
+    <!-- Bootstrap and necessary JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- MediaPipe Hands JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"></script>
+
+    <!-- Custom JS -->
+    <script>
+        const videoElement = document.getElementById('input-video');
+        const canvasElement = document.getElementById('output-canvas');
+        const canvasCtx = canvasElement.getContext('2d');
+        const hand1InfoElement = document.getElementById('hand1-info');
+        const hand2InfoElement = document.getElementById('hand2-info');
+
+        async function setupCamera() {
+            videoElement.width = canvasElement.width = 640;
+            videoElement.height = canvasElement.height = 480;
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: true
+            });
+            videoElement.srcObject = stream;
+            return new Promise((resolve) => {
+                videoElement.onloadedmetadata = () => {
+                    resolve(videoElement);
+                };
+            });
+        }
+
+        const hands = new Hands({
+            locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`,
+        });
+
+        hands.setOptions({
+            maxNumHands: 2,
+            modelComplexity: 1,
+            minDetectionConfidence: 0.5,
+            minTrackingConfidence: 0.5
+        });
+
+        hands.onResults(onResults);
+
+        function onResults(results) {
+            canvasCtx.save();
+            canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+            canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
+
+            if (results.multiHandLandmarks && results.multiHandedness) {
+                for (let index = 0; index < results.multiHandLandmarks.length; index++) {
+                    const classification = results.multiHandedness[index];
+                    const isRightHand = classification.label === 'Right';
+
+                    const landmarks = results.multiHandLandmarks[index];
+                    drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS,
+                        { color: isRightHand ? '#00FF00' : '#FF0000' });
+                    drawLandmarks(canvasCtx, landmarks, {
+                        color: isRightHand ? '#00FF00' : '#FF0000',
+                        fillColor: isRightHand ? '#00FF00' : '#FF0000',
+                        radius: (data) => {
+                            return lerp(data.from.z, -0.15, .1, 10, 1);
+                        }
+                    });
+                    
+                    const handInfo = isRightHand ? 'Right Hand Detected' : 'Left Hand Detected';
+                    const fingerCount = landmarks.filter((landmark, i) => i === 4 || i === 8 || i === 12 || i === 16 || i === 20).length;
+
+                    if (index === 0) {
+                        hand1InfoElement.textContent = `${handInfo} - Fingers: ${fingerCount}`;
+                    } else if (index === 1) {
+                        hand2InfoElement.textContent = `${handInfo} - Fingers: ${fingerCount}`;
+                    }
+                }
+            } else {
+                hand1InfoElement.textContent = 'N/A';
+                hand2InfoElement.textContent = 'N/A';
+            }
+            canvasCtx.restore();
+        }
+
+        function lerp(a, b, c, d, e) {
+            return d + (e - d) * (a - b) / (c - b);
+        }
+
+        setupCamera().then(video => {
+            video.play();
+            function animate() {
+                hands.send({ image: video });
+                requestAnimationFrame(animate);
+            }
+            animate();
+        });
+    </script>
+</body>
+</html>
