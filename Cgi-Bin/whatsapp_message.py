@@ -18,8 +18,8 @@ message = form.getvalue('message')
 
 def send_whatsapp_message(phone_number, message):
     # Twilio credentials (replace with your actual credentials)
-    account_sid = 'AC6896a2f34362997b5ef9a748dae19e4c'
-    auth_token = 'abba809ef99b211cf960e7c0cfd61d34'
+    account_sid = '    '
+    auth_token = '     '
     twilio_whatsapp_number = 'whatsapp:+14155238886'  # Twilio's sandbox number
 
     client = Client(account_sid, auth_token)
