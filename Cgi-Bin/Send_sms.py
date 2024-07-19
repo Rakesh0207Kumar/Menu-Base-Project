@@ -8,8 +8,8 @@ from twilio.rest import Client
 cgitb.enable()
 
 # Twilio credentials
-account_sid = 'AC03943afa0971953425f65d079953f17b'
-auth_token = '8e4ae949578d9209cb4feb13e092ac3f'
+account_sid = ''
+auth_token = ''
 
 # Function to send SMS
 def send_sms():
