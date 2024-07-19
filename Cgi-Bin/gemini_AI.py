@@ -7,7 +7,7 @@ import google.generativeai as genai
 print("Content-Type: text/plain\n")
 
 # Configure the API key
-genai.configure(api_key="AIzaSyAdlRO8KusHy9uJW-Jvja8rA88KLJV0xwQ")
+genai.configure(api_key="  ")
 
 # Define the generation configuration
 generation_config = {
