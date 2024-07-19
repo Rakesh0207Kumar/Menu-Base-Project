@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hand Gesture Volume Control</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            color: #fff;
+            text-align: center;
+            padding: 50px;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        #videoElement {
+            width: 640px;
+            height: 480px;
+            border: 5px solid #fff;
+            border-radius: 10px;
+        }
+        .btn-custom {
+            background-color: #ff5e62;
+            border-color: #ff5e62;
+            color: #fff;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .btn-custom:hover {
+            background-color: #ff3b4a;
+            border-color: #ff3b4a;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Hand Gesture Volume Control</h1>
+        <video id="videoElement" autoplay></video>
+        <div class="mt-4">
+            <button id="startBtn" class="btn btn-custom">Start</button>
+            <button id="stopBtn" class="btn btn-custom">Stop</button>
+        </div>
+    </div>
+
+    <script>
+        const video = document.getElementById('videoElement');
+        const startBtn = document.getElementById('startBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        let stream;
+
+        async function startCamera() {
+            stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            video.srcObject = stream;
+        }
+
+        function stopCamera() {
+            stream.getTracks().forEach(track => track.stop());
+        }
+
+        startBtn.addEventListener('click', () => {
+            startCamera();
+            fetch('/cgi-bin/volume_control.py')
+                .then(response => response.text())
+                .then(data => console.log(data))
+                .catch(error => console.error('Error:', error));
+        });
+
+        stopBtn.addEventListener('click', stopCamera);
+    </script>
+</body>
+</html>
